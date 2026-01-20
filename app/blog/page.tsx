@@ -1,25 +1,19 @@
 import { getPosts } from '@/lib/content-api'
+import Link from 'next/link'
 
-export const revalidate = 10 // ISR: refresh cache after 10 seconds (testing)
+export const revalidate = 60
 
-export default async function BlogPage() {
+export default async function Blog() {
   const posts = await getPosts()
 
   return (
-    <main style={{ padding: 24 }}>
+    <div>
       <h1>Blog</h1>
-
-      {posts.length === 0 ? (
-        <p>No posts yet.</p>
-      ) : (
-        <ul>
-          {posts.map((p) => (
-            <li key={p.slug}>
-              <a href={`/blog/${p.slug}`}>{p.title}</a>
-            </li>
-          ))}
-        </ul>
-      )}
-    </main>
+      {posts.map(p => (
+        <Link key={p.slug} href={`/blog/${p.slug}`}>
+          {p.title}
+        </Link>
+      ))}
+    </div>
   )
 }
